@@ -1,0 +1,40 @@
+<html>
+<body>
+<center>
+<form method=post action="/save-task">
+  {{ form.csrf_token }}
+  {{ form.date }}
+  {{ form.id }}
+  {{ form.state }}
+  <table>
+  <tr><td>&nbsp;</td></tr>
+  <tr><td>&nbsp;</td></tr>
+  <tr><td colspan="2" align="center">{{ data.title }}</td></tr>
+  <tr><td>&nbsp;</td></tr>
+  <tr>
+    <td>text:</td>
+    <td>{{ form.task_text }}</td>
+  </tr>  
+  <tr><td>&nbsp;</td></tr>
+  <tr>
+    <td colspan="2" align="center">
+    <table><tr>
+    <td align="center">{{ form.submit_edit }}</td>
+    
+    {% if data.state == 'active' %}
+        <td align="center">{{ form.submit_done }}</td>
+        <td align="center">{{ form.submit_delete }}</td>
+    {% elif data.state == 'done' %}
+        <td align="center">{{ form.submit_activate }}</td>
+        <td align="center">{{ form.submit_delete }}</td>
+    {% endif %}
+
+    <td align="center">{{ form.submit_back }}</td>
+    </tr></table>
+    </td>
+  </tr>
+  </table>
+</form>
+</center>
+</body>
+</html>
