@@ -12,9 +12,8 @@ import storage
 from settings import settings
 
 
-if __name__ == "__main__":
-    app = Flask(__name__)
-    app.config.from_object('flask_config')
+app = Flask(__name__)
+app.config.from_object('flask_config')
 
 
 @app.teardown_appcontext
