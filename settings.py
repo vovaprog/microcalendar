@@ -5,6 +5,7 @@ settings = {
     'active_color':           'aaffaa',
     'done_color':             'cccccc',
     'header_backcolor_today': '88ddff',
-    'header_backcolor':       'dddddd'
+    'header_backcolor':       'dddddd',
+    'database':               './data/sqlite.db'
 }
 

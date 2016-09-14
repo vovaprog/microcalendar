@@ -1,18 +1,7 @@
-from flask import Flask
-from functools import wraps
-from flask import request, Response, redirect
-from flask import render_template
-from calendar import Calendar
-from datetime import date
-import calendar
-from flask.ext.wtf import Form
-from wtforms import BooleanField, StringField, PasswordField, validators, HiddenField, SubmitField
-import sqlite3
-from flask import g
 import os
-
-
-DATABASE = './data/sqlite.db'
+from flask import g
+import sqlite3
+from settings import settings
 
 
 def init_db(db):
@@ -24,12 +13,12 @@ def init_db(db):
 
 def get_db():
     new_database = False
-    if not os.path.isfile(DATABASE):
+    if not os.path.isfile(settings['database']):
         new_database = True
 
     db = getattr(g, '_database', None)
     if db is None:
-        db = sqlite3.connect(DATABASE)
+        db = sqlite3.connect(settings['database'])
         g._database = db
 
     if new_database:
