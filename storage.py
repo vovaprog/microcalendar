@@ -12,7 +12,7 @@ from flask import g
 import os
 
 
-DATABASE = 'sqlite.db'
+DATABASE = './data/sqlite.db'
 
 
 def init_db(db):
