@@ -112,7 +112,7 @@ def save_task_page():
     form = TaskEditForm()
     
     if form.submit_back.data:
-        return redirect("/{0}".format(form.date.data))
+        return redirect(create_link("/{0}".format(form.date.data)))
         
     id = int(form.id.data)
 
@@ -132,7 +132,7 @@ def save_task_page():
             else:
                 storage.edit_task(id=id, date=form.date.data, task=form.task_text.data, state=form.state.data, color='default')
 
-        return redirect("/{0}".format(form.date.data))
+        return redirect(create_link("/{0}".format(form.date.data)))
 
     else:
         if id < 0:
