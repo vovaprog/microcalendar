@@ -84,6 +84,11 @@ def state_to_backcolor(state):
     else:
         return 'ffffff'
 
+
+def create_link(page_url): 
+    return "{0}/{1}".format(settings["application_url"], page_url).replace("//", "/")
+
+
 #=========================================================================
 
 class TaskEditForm(Form):
@@ -197,7 +202,7 @@ def calendar_page(page_date):
             day_data = {}
             day_data['day'] = day.day
             day_data['header_backcolor'] = settings['header_backcolor_today'] if day == today else settings['header_backcolor']
-            day_data['create_task_link'] = '/create-task/{0}'.format(date_to_string(day.year, day.month, day.day))
+            day_data['create_task_link'] = create_link('/create-task/{0}'.format(date_to_string(day.year, day.month, day.day)))
             day_data['tasks'] = []
             for db_task in tasks:
                 if str(day) == db_task['date']:
@@ -205,7 +210,7 @@ def calendar_page(page_date):
                     html_task['id'] = db_task['id']
                     html_task['date'] = db_task['date']
                     html_task['task'] = db_task['task']
-                    html_task['edit_link'] = '/edit-task/{0}'.format(db_task['id'])
+                    html_task['edit_link'] = create_link('/edit-task/{0}'.format(db_task['id']))
                     html_task['backcolor'] = state_to_backcolor(db_task['state'])
                     day_data['tasks'].append(html_task)
 
@@ -217,8 +222,8 @@ def calendar_page(page_date):
     prev_year, prev_month = get_prev_month(year, month)
     next_year, next_month = get_next_month(year, month)
 
-    data['prev_month_link'] = str.format('/{0}', date_to_string(prev_year, prev_month))
-    data['next_month_link'] = str.format('/{0}', date_to_string(next_year, next_month))
+    data['prev_month_link'] = create_link(str.format('/{0}', date_to_string(prev_year, prev_month)))
+    data['next_month_link'] = create_link(str.format('/{0}', date_to_string(next_year, next_month)))
 
     data["title"] = "{0} {1}".format(year, calendar.month_name[month])
 
