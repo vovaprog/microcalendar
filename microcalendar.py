@@ -152,6 +152,7 @@ def create_task_page(date):
     data = {}
     data['title'] = 'create task'
     data['state'] = 'create'
+    data['save_task_link'] = create_link('/save-task')
 
     return render_template('edit-task.html', form=form, data=data)
 
@@ -170,6 +171,7 @@ def edit_task_page(id):
     data = {}
     data['title'] = 'edit task'
     data['state'] = r['state']
+    data['save_task_link'] = create_link('/save-task')
 
     return render_template('edit-task.html', form=form, data=data)
 
