@@ -157,6 +157,25 @@ def create_task_page(date):
     return render_template('edit-task.html', form=form, data=data)
 
 
+def move_calendar(year, month, id):
+    cal = calendar.Calendar(0)
+    month_cal = cal.monthdatescalendar(year, month)
+
+    month_data = []
+
+    for week in month_cal:
+        week_data = []
+        for day in week:            
+            day_data = {}
+            day_data['move_link'] = create_link('/move_task/{0}/{1}-{2}-{3}'.format(id, day.year, day.month, day.day))
+            day_data['day'] = day.day
+            week_data.append(day_data)
+        month_data.append(week_data)            
+
+    return month_data
+
+
+
 @app.route('/edit-task/<id>')
 @requires_auth
 def edit_task_page(id):
@@ -172,6 +191,16 @@ def edit_task_page(id):
     data['title'] = 'edit task'
     data['state'] = r['state']
     data['save_task_link'] = create_link('/save-task')
+
+    cur_year, cur_month, cur_day = parse_date(r['date'])
+    prev_year, prev_month = get_prev_month(cur_year, cur_month)
+    next_year, next_month = get_prev_month(cur_year, cur_month)
+
+    data['move_prev_month'] = move_calendar(cur_year, cur_month, id)
+    data['move_cur_month'] = move_calendar(cur_year, cur_month, id)
+    data['move_next_month'] = move_calendar(next_year, next_month, id)    
+
+    print data['move_cur_month']
 
     return render_template('edit-task.html', form=form, data=data)
 

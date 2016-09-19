@@ -2,38 +2,86 @@
 <body>
 <center>
 <form method=post action="{{ data.save_task_link }}">
-  {{ form.csrf_token }}
-  {{ form.date }}
-  {{ form.id }}
-  {{ form.state }}
-  <table>
-  <tr><td>&nbsp;</td></tr>
-  <tr><td>&nbsp;</td></tr>
-  <tr><td colspan="2" align="center">{{ data.title }}</td></tr>
-  <tr><td>&nbsp;</td></tr>
-  <tr>
-    <td>text:</td>
-    <td>{{ form.task_text }}</td>
-  </tr>  
-  <tr><td>&nbsp;</td></tr>
-  <tr>
-    <td colspan="2" align="center">
-    <table><tr>
-    <td align="center">{{ form.submit_edit }}</td>
+    {{ form.csrf_token }}
+    {{ form.date }}
+    {{ form.id }}
+    {{ form.state }}
+    <table>
+    <tr><td>&nbsp;</td></tr>
+    <tr><td>&nbsp;</td></tr>
+    <tr><td colspan="2" align="center">{{ data.title }}</td></tr>
+    <tr><td>&nbsp;</td></tr>
     
-    {% if data.state == 'active' %}
-        <td align="center">{{ form.submit_done }}</td>
-        <td align="center">{{ form.submit_delete }}</td>
-    {% elif data.state == 'done' %}
-        <td align="center">{{ form.submit_activate }}</td>
-        <td align="center">{{ form.submit_delete }}</td>
-    {% endif %}
-
-    <td align="center">{{ form.submit_back }}</td>
-    </tr></table>
+    <tr>
+        <td>text:</td><td>{{ form.task_text }}</td>
+    </tr>  
+    
+    <tr><td>&nbsp;</td></tr>
+    
+    <tr>
+    <td colspan="2" align="center">
+        <table>
+        <tr>
+        <td align="center">{{ form.submit_edit }}</td>
+        {% if data.state == 'active' %}
+            <td align="center">{{ form.submit_done }}</td>
+            <td align="center">{{ form.submit_delete }}</td>
+        {% elif data.state == 'done' %}
+            <td align="center">{{ form.submit_activate }}</td>
+            <td align="center">{{ form.submit_delete }}</td>
+        {% endif %}
+        <td align="center">{{ form.submit_back }}</td>
+        </tr>
+        </table>
     </td>
-  </tr>
-  </table>
+    </tr>
+    <tr><td>&nbsp;</td></tr>
+    </table>
+    <table>
+    <tr>  
+        <td>
+            <table>
+            <tr>
+                <td>
+                <table>
+                {% for week in data.move_prev_month %}
+                <tr>
+                    {% for date_data in week %}
+                    <td align="right"><a href="{{date_data.move_link}}">{{date_data.day}}</a></td>        
+                    {% endfor %}
+                </tr>
+                {% endfor %}        
+                </table>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>    
+                    <table>
+                    {% for week in data.move_cur_month %}
+                    <tr>
+                        {% for date_data in week %}
+                        <td align="right"><a href="{{date_data.move_link}}">{{date_data.day}}</a></td>        
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}        
+                    </table>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>    
+                    <table>
+                    {% for week in data.move_next_month %}
+                    <tr>
+                        {% for date_data in week %}
+                        <td align="right"><a href="{{date_data.move_link}}">{{date_data.day}}</a></td>        
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}        
+                    </table>
+                </td>
+            </tr>
+            </table>
+        </td>
+    </tr>    
+    </table>
 </form>
 </center>
 </body>
