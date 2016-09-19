@@ -61,9 +61,8 @@ def parse_date(date):
     if m:
         year = m.group(1)
         month = m.group(2)
-        if len(m.groups()) > 4:
-            day = m.group(4)
-        else:
+        day = m.group(4)
+        if day is None:
             day = 0
         return int(year), int(month), int(day)
     return 0, 0, 0
@@ -88,6 +87,23 @@ def state_to_backcolor(state):
 def create_link(page_url): 
     return "{0}/{1}".format(settings["application_url"], page_url).replace("//", "/")
 
+
+def move_calendar(year, month, id):
+    cal = calendar.Calendar(0)
+    month_cal = cal.monthdatescalendar(year, month)
+
+    month_data = []
+
+    for week in month_cal:
+        week_data = []
+        for day in week:            
+            day_data = {}
+            day_data['move_link'] = create_link('/move-task/{0}/{1}-{2}-{3}'.format(id, day.year, day.month, day.day))
+            day_data['day'] = day.day
+            week_data.append(day_data)
+        month_data.append(week_data)            
+
+    return month_data
 
 #=========================================================================
 
@@ -141,6 +157,15 @@ def save_task_page():
             return edit_task_page(id)
 
 
+@app.route('/move-task/<id>/<date>')
+@requires_auth
+def move_task_page(id, date):
+    id = int(id)
+    year, month, day = parse_date(date)
+    storage.edit_task_date(id, date_to_string(year, month, day))
+    return redirect(create_link("/{0}".format(date_to_string(year, month))))
+
+
 @app.route('/create-task/<date>')
 @requires_auth
 def create_task_page(date):
@@ -155,25 +180,6 @@ def create_task_page(date):
     data['save_task_link'] = create_link('/save-task')
 
     return render_template('edit-task.html', form=form, data=data)
-
-
-def move_calendar(year, month, id):
-    cal = calendar.Calendar(0)
-    month_cal = cal.monthdatescalendar(year, month)
-
-    month_data = []
-
-    for week in month_cal:
-        week_data = []
-        for day in week:            
-            day_data = {}
-            day_data['move_link'] = create_link('/move_task/{0}/{1}-{2}-{3}'.format(id, day.year, day.month, day.day))
-            day_data['day'] = day.day
-            week_data.append(day_data)
-        month_data.append(week_data)            
-
-    return month_data
-
 
 
 @app.route('/edit-task/<id>')
@@ -194,13 +200,11 @@ def edit_task_page(id):
 
     cur_year, cur_month, cur_day = parse_date(r['date'])
     prev_year, prev_month = get_prev_month(cur_year, cur_month)
-    next_year, next_month = get_prev_month(cur_year, cur_month)
+    next_year, next_month = get_next_month(cur_year, cur_month)
 
-    data['move_prev_month'] = move_calendar(cur_year, cur_month, id)
+    data['move_prev_month'] = move_calendar(prev_year, prev_month, id)
     data['move_cur_month'] = move_calendar(cur_year, cur_month, id)
     data['move_next_month'] = move_calendar(next_year, next_month, id)    
-
-    print data['move_cur_month']
 
     return render_template('edit-task.html', form=form, data=data)
 

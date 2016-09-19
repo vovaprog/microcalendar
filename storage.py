@@ -64,6 +64,10 @@ def edit_task(id, date, task, state, color):
         'UPDATE tasks SET date=?, task=?, state=?, color=? WHERE id=?', (date, task, state, color, id))
 
 
+def edit_task_date(id, date):
+    execute_non_query('UPDATE tasks SET date=? WHERE id=?', (date, id))
+
+
 def delete_task(id):
     execute_non_query('DELETE FROM tasks WHERE id=?', (id,))
 
@@ -74,3 +78,4 @@ def get_tasks(date_start, date_end):
 
 def get_task(id):
     return execute_fetch_first('SELECT * FROM tasks WHERE id=?', (id,))
+
