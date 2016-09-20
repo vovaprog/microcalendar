@@ -77,9 +77,9 @@ def date_to_string(year, month, day=0):
 
 def state_to_backcolor(state):
     if state == 'active':
-        return settings['active_color']
+        return settings['color_active']
     elif state == 'done':
-        return settings['done_color']
+        return settings['color_done']
     else:
         return 'ffffff'
 
@@ -89,6 +89,8 @@ def create_link(page_url):
 
 
 def move_calendar(year, month, id):
+    task = storage.get_task(id)
+    
     cal = calendar.Calendar(0)
     month_cal = cal.monthdatescalendar(year, month)
 
@@ -100,8 +102,16 @@ def move_calendar(year, month, id):
             day_data = {}
             day_data['move_link'] = create_link('/move-task/{0}/{1}-{2}-{3}'.format(id, day.year, day.month, day.day))
             day_data['day'] = day.day
+            if date_to_string(day.year, day.month, day.day) == task['date']:
+                day_data['backcolor'] = settings['color_active']
+            elif day == date.today():
+                day_data['backcolor'] = settings['color_today']
+            elif day.weekday() > 4: 
+                day_data['backcolor'] = settings['color_weekend']
+            else:
+                day_data['backcolor'] = '#ffffff'
             week_data.append(day_data)
-        month_data.append(week_data)            
+        month_data.append(week_data)
 
     return month_data
 
@@ -203,8 +213,11 @@ def edit_task_page(id):
     next_year, next_month = get_next_month(cur_year, cur_month)
 
     data['move_prev_month'] = move_calendar(prev_year, prev_month, id)
+    data['move_prev_month_title'] = calendar.month_name[prev_month].lower()[:3]
     data['move_cur_month'] = move_calendar(cur_year, cur_month, id)
-    data['move_next_month'] = move_calendar(next_year, next_month, id)    
+    data['move_cur_month_title'] = calendar.month_name[cur_month].lower()[:3]
+    data['move_next_month'] = move_calendar(next_year, next_month, id)
+    data['move_next_month_title'] = calendar.month_name[next_month].lower()[:3]
 
     return render_template('edit-task.html', form=form, data=data)
 
@@ -236,7 +249,14 @@ def calendar_page(page_date):
         for day in week:            
             day_data = {}
             day_data['day'] = day.day
-            day_data['header_backcolor'] = settings['header_backcolor_today'] if day == today else settings['header_backcolor']
+
+            if day == today:
+                day_data['header_backcolor'] = settings['color_today']
+            elif day.weekday() > 4:
+                day_data['header_backcolor'] = settings['color_weekend']
+            else:
+                day_data['header_backcolor'] = settings['color_header']
+
             day_data['create_task_link'] = create_link('/create-task/{0}'.format(date_to_string(day.year, day.month, day.day)))
             day_data['tasks'] = []
             for db_task in tasks:

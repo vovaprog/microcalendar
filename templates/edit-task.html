@@ -2,11 +2,11 @@
 <body>
 <center>
 <form method=post action="{{ data.save_task_link }}">
-    {{ form.csrf_token }}
-    {{ form.date }}
-    {{ form.id }}
-    {{ form.state }}
-    <table>
+{{ form.csrf_token }}
+{{ form.date }}
+{{ form.id }}
+{{ form.state }}
+<table>
     <tr><td>&nbsp;</td></tr>
     <tr><td>&nbsp;</td></tr>
     <tr><td colspan="2" align="center">{{ data.title }}</td></tr>
@@ -19,69 +19,74 @@
     <tr><td>&nbsp;</td></tr>
     
     <tr>
-    <td colspan="2" align="center">
-        <table>
-        <tr>
-        <td align="center">{{ form.submit_edit }}</td>
-        {% if data.state == 'active' %}
-            <td align="center">{{ form.submit_done }}</td>
-            <td align="center">{{ form.submit_delete }}</td>
-        {% elif data.state == 'done' %}
-            <td align="center">{{ form.submit_activate }}</td>
-            <td align="center">{{ form.submit_delete }}</td>
-        {% endif %}
-        <td align="center">{{ form.submit_back }}</td>
-        </tr>
-        </table>
-    </td>
+        <td colspan="2" align="center">
+            <table>
+            <tr>
+            <td align="center">{{ form.submit_edit }}</td>
+            {% if data.state == 'active' %}
+                <td align="center">{{ form.submit_done }}</td>
+                <td align="center">{{ form.submit_delete }}</td>
+            {% elif data.state == 'done' %}
+                <td align="center">{{ form.submit_activate }}</td>
+                <td align="center">{{ form.submit_delete }}</td>
+            {% endif %}
+            <td align="center">{{ form.submit_back }}</td>
+            </tr>
+            </table>
+        </td>
     </tr>
     <tr><td>&nbsp;</td></tr>
-    </table>
-    <table>
+    <tr><td>&nbsp;</td></tr>
+</table>
+<table>
+    <tr><td align = "center">move to:</td></tr>
     <tr>  
         <td>
             <table>
             <tr>
                 <td>
                 <table>
-                {% for week in data.move_prev_month %}
-                <tr>
-                    {% for date_data in week %}
-                    <td align="right"><a href="{{date_data.move_link}}">{{date_data.day}}</a></td>        
-                    {% endfor %}
-                </tr>
-                {% endfor %}        
+                    <tr><td align="center" colspan="7">{{data.move_prev_month_title}}</td></tr>
+                    {% for week in data.move_prev_month %}
+                    <tr>
+                        {% for date_data in week %}
+                        <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>        
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}        
                 </table>
                 </td>
-                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>    
                     <table>
-                    {% for week in data.move_cur_month %}
-                    <tr>
-                        {% for date_data in week %}
-                        <td align="right"><a href="{{date_data.move_link}}">{{date_data.day}}</a></td>        
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}        
+                        <tr><td align="center" colspan="7">{{data.move_cur_month_title}}</td></tr>
+                        {% for week in data.move_cur_month %}
+                        <tr>
+                            {% for date_data in week %}
+                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>        
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}        
                     </table>
                 </td>
-                <td>&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>    
                     <table>
-                    {% for week in data.move_next_month %}
-                    <tr>
-                        {% for date_data in week %}
-                        <td align="right"><a href="{{date_data.move_link}}">{{date_data.day}}</a></td>        
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}        
+                        <tr><td align="center" colspan="7">{{data.move_next_month_title}}</td></tr>
+                        {% for week in data.move_next_month %}
+                        <tr>
+                            {% for date_data in week %}
+                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>        
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}        
                     </table>
                 </td>
             </tr>
             </table>
         </td>
     </tr>    
-    </table>
+</table>
 </form>
 </center>
 </body>
