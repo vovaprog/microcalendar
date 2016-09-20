@@ -38,6 +38,9 @@
     <tr><td>&nbsp;</td></tr>
     <tr><td>&nbsp;</td></tr>
 </table>
+
+
+{% if data.state != 'create' %}
 <table>
     <tr><td align = "center">move to:</td></tr>
     <tr>  
@@ -45,16 +48,16 @@
             <table>
             <tr>
                 <td>
-                <table>
-                    <tr><td align="center" colspan="7">{{data.move_prev_month_title}}</td></tr>
-                    {% for week in data.move_prev_month %}
-                    <tr>
-                        {% for date_data in week %}
-                        <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>        
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}        
-                </table>
+                    <table>
+                        <tr><td align="center" colspan="7">{{data.move_prev_month_title}}</td></tr>
+                        {% for week in data.move_prev_month %}
+                        <tr>
+                            {% for date_data in week %}
+                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>        
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}        
+                    </table>
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>    
@@ -87,6 +90,9 @@
         </td>
     </tr>    
 </table>
+{% endif %}
+
+
 </form>
 </center>
 </body>
