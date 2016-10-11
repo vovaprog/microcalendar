@@ -8,6 +8,7 @@ settings = {
     'color_header':           'eeeeee',
     'color_weekend':          'cceeff',
     'database':               './sqlite.db',
-    'application_url':        ''
+    'application_url':        '',
+    'route_url':              ''
 }
 

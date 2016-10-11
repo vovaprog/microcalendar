@@ -2,7 +2,7 @@ import os
 import re
 from flask import Flask
 from functools import wraps
-from flask import request, Response, redirect, render_template, g
+from flask import request, Response, render_template, g
 from datetime import date
 import calendar
 from flask.ext.wtf import Form
@@ -132,13 +132,13 @@ class TaskEditForm(Form):
 
 #=========================================================================
 
-@app.route('/save-task', methods=['GET', 'POST'])
+@app.route(settings['route_url'] + '/save-task', methods=['GET', 'POST'])
 @requires_auth
 def save_task_page():
     form = TaskEditForm()
     
     if form.submit_back.data:
-        return redirect(create_link("/{0}".format(form.date.data)))
+        return calendar_page(create_link("/{0}".format(form.date.data)))
         
     id = int(form.id.data)
 
@@ -158,7 +158,7 @@ def save_task_page():
             else:
                 storage.edit_task(id=id, date=form.date.data, task=form.task_text.data, state=form.state.data, color='default')
 
-        return redirect(create_link("/{0}".format(form.date.data)))
+        return calendar_page(create_link("/{0}".format(form.date.data)))
 
     else:
         if id < 0:
@@ -167,16 +167,16 @@ def save_task_page():
             return edit_task_page(id)
 
 
-@app.route('/move-task/<id>/<date>')
+@app.route(settings['route_url'] + '/move-task/<id>/<date>')
 @requires_auth
 def move_task_page(id, date):
     id = int(id)
     year, month, day = parse_date(date)
     storage.edit_task_date(id, date_to_string(year, month, day))
-    return redirect(create_link("/{0}".format(date_to_string(year, month))))
+    return calendar_page(create_link("/{0}".format(date_to_string(year, month))))
 
 
-@app.route('/create-task/<date>')
+@app.route(settings['route_url'] + '/create-task/<date>')
 @requires_auth
 def create_task_page(date):
     form = TaskEditForm()
@@ -192,7 +192,7 @@ def create_task_page(date):
     return render_template('edit-task.html', form=form, data=data)
 
 
-@app.route('/edit-task/<id>')
+@app.route(settings['route_url'] + '/edit-task/<id>')
 @requires_auth
 def edit_task_page(id):
     r = storage.get_task(id)
@@ -222,8 +222,13 @@ def edit_task_page(id):
     return render_template('edit-task.html', form=form, data=data)
 
 
-@app.route('/', defaults={'page_date': ''})
-@app.route('/<page_date>')
+root_url = settings['route_url']
+if root_url == "":
+    root_url = "/"
+
+
+@app.route(root_url, defaults={'page_date': ''})
+@app.route(settings['route_url'] + '/<page_date>')
 @requires_auth
 def calendar_page(page_date):
     year, month, day = parse_date(page_date)
