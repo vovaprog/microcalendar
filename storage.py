@@ -78,4 +78,3 @@ def get_tasks(date_start, date_end):
 
 def get_task(id):
     return execute_fetch_first('SELECT * FROM tasks WHERE id=?', (id,))
-

@@ -42,6 +42,7 @@ def requires_auth(f):
 
 #=========================================================================
 
+
 def get_prev_month(year, month):
     if month == 1:
         return year - 1, 12
@@ -84,13 +85,13 @@ def state_to_backcolor(state):
         return 'ffffff'
 
 
-def create_link(page_url): 
+def create_link(page_url):
     return "{0}/{1}".format(settings["application_url"], page_url).replace("//", "/")
 
 
 def move_calendar(year, month, id):
     task = storage.get_task(id)
-    
+
     cal = calendar.Calendar(0)
     month_cal = cal.monthdatescalendar(year, month)
 
@@ -98,7 +99,7 @@ def move_calendar(year, month, id):
 
     for week in month_cal:
         week_data = []
-        for day in week:            
+        for day in week:
             day_data = {}
             day_data['move_link'] = create_link('/move-task/{0}/{1}-{2}-{3}'.format(id, day.year, day.month, day.day))
             day_data['day'] = day.day
@@ -106,7 +107,7 @@ def move_calendar(year, month, id):
                 day_data['backcolor'] = settings['color_active']
             elif day == date.today():
                 day_data['backcolor'] = settings['color_today']
-            elif day.weekday() > 4: 
+            elif day.weekday() > 4:
                 day_data['backcolor'] = settings['color_weekend']
             else:
                 day_data['backcolor'] = '#ffffff'
@@ -116,6 +117,7 @@ def move_calendar(year, month, id):
     return month_data
 
 #=========================================================================
+
 
 class TaskEditForm(Form):
     date = HiddenField('date')
@@ -132,14 +134,15 @@ class TaskEditForm(Form):
 
 #=========================================================================
 
+
 @app.route(settings['route_url'] + '/save-task', methods=['GET', 'POST'])
 @requires_auth
 def save_task_page():
     form = TaskEditForm()
-    
+
     if form.submit_back.data:
         return calendar_page(create_link("/{0}".format(form.date.data)))
-        
+
     id = int(form.id.data)
 
     if form.validate_on_submit():
@@ -251,7 +254,7 @@ def calendar_page(page_date):
 
     for week in month_cal:
         week_data = []
-        for day in week:            
+        for day in week:
             day_data = {}
             day_data['day'] = day.day
 
@@ -293,4 +296,3 @@ def calendar_page(page_date):
 if __name__ == "__main__":
     app.debug = True
     app.run(host='0.0.0.0')
-
