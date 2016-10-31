@@ -141,7 +141,7 @@ def save_task_page():
     form = TaskEditForm()
 
     if form.submit_back.data:
-        return calendar_page(create_link("/{0}".format(form.date.data)))
+        return calendar_page(form.date.data)
 
     id = int(form.id.data)
 
@@ -161,7 +161,7 @@ def save_task_page():
             else:
                 storage.edit_task(id=id, date=form.date.data, task=form.task_text.data, state=form.state.data, color='default')
 
-        return calendar_page(create_link("/{0}".format(form.date.data)))
+        return calendar_page(form.date.data)
 
     else:
         if id < 0:
@@ -176,7 +176,7 @@ def move_task_page(id, date):
     id = int(id)
     year, month, day = parse_date(date)
     storage.edit_task_date(id, date_to_string(year, month, day))
-    return calendar_page(create_link("/{0}".format(date_to_string(year, month))))
+    return calendar_page(date_to_string(year, month))
 
 
 @app.route(settings['route_url'] + '/create-task/<date>')
