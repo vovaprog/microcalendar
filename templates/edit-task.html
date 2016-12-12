@@ -11,13 +11,13 @@
     <tr><td>&nbsp;</td></tr>
     <tr><td colspan="2" align="center">{{ data.title }}</td></tr>
     <tr><td>&nbsp;</td></tr>
-    
+
     <tr>
         <td>text:</td><td>{{ form.task_text }}</td>
-    </tr>  
-    
+    </tr>
+
     <tr><td>&nbsp;</td></tr>
-    
+
     <tr>
         <td colspan="2" align="center">
             <table>
@@ -43,7 +43,7 @@
 {% if data.state != 'create' %}
 <table>
     <tr><td align = "center">move to:</td></tr>
-    <tr>  
+    <tr>
         <td>
             <table>
             <tr>
@@ -53,42 +53,42 @@
                         {% for week in data.move_prev_month %}
                         <tr>
                             {% for date_data in week %}
-                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>        
+                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>
                             {% endfor %}
                         </tr>
-                        {% endfor %}        
+                        {% endfor %}
                     </table>
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>    
+                <td>
                     <table>
                         <tr><td align="center" colspan="7">{{data.move_cur_month_title}}</td></tr>
                         {% for week in data.move_cur_month %}
                         <tr>
                             {% for date_data in week %}
-                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>        
+                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>
                             {% endfor %}
                         </tr>
-                        {% endfor %}        
+                        {% endfor %}
                     </table>
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>    
+                <td>
                     <table>
                         <tr><td align="center" colspan="7">{{data.move_next_month_title}}</td></tr>
                         {% for week in data.move_next_month %}
                         <tr>
                             {% for date_data in week %}
-                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>        
+                            <td align="right" bgcolor="{{date_data.backcolor}}"><a href="{{date_data.move_link}}" style="text-decoration:none;color:black">{{date_data.day}}</a></td>
                             {% endfor %}
                         </tr>
-                        {% endfor %}        
+                        {% endfor %}
                     </table>
                 </td>
             </tr>
             </table>
         </td>
-    </tr>    
+    </tr>
 </table>
 {% endif %}
 
